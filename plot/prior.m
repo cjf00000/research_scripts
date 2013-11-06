@@ -24,7 +24,7 @@ xlim([10 100000]);
 %ylim([1550 1580]);
 set(gca,'xtick',x);
 set(gca, 'xscale', 'log');
-legend('k=200','k=1000');
+legend('K = 200','K = 1000');
 %set(gca, 'xticklabel', {'1'; '2'; '4'; '8'; '16'; '32'; '64'; '128'; '256'; '512'; 'n'});
 ylabel('perplexity');   
 xlabel('a');
