@@ -1,0 +1,2 @@
+#!/bin/bash
+sed $1 -e "s/,/ /g" -e "s/)/ /g" -e "s/(/ /g" | ~/jianfei/research_scripts/extract_number
