@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# This will submit a command to lsf, and block until
+# the job is complete.
+
+if [ "$#" == "0" ]
+then
+	command=`cat <&0`
+else
+	command=$@
+fi
+
+# Generate a job id
+id=`cat /dev/urandom| tr -dc 'a-zA-Z0-9' | fold -w 10| head -n 1`
+
+echo "$command" > $id.COMMAND
+echo "
+touch $id.DONE" >> $id.COMMAND
+
+echo "sh $id.COMMAND > $id.OUTPUT" > $id.METACOMMAND
+
+# Submit
+cat $id.METACOMMAND | bsub >/dev/null 2>&1
+
+# Wait
+while [ ! -f $id.DONE ]
+do
+	sleep 1
+done
+
+cat $id.OUTPUT
+
+rm ${id}*
