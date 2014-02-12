@@ -11,7 +11,8 @@ else
 fi
 
 # Generate a job id
-id=`cat /dev/urandom| tr -dc 'a-zA-Z0-9' | fold -w 10| head -n 1`
+#id=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;`
+id=`uuidgen -r`
 
 echo "$command" > $id.COMMAND
 echo "
@@ -25,7 +26,21 @@ cat $id.METACOMMAND | bsub >/dev/null 2>&1
 # Wait
 while [ ! -f $id.DONE ]
 do
-	sleep 1
+	sleep 20
+
+	if [ -f $id.DONE ]
+	then
+		break
+	fi
+
+	if [ `bjobs -w | grep $id | wc -l` == '0' ]
+	then
+		if [ ! -f $id.DONE ]
+		then
+			echo "$id Failed" 1>&2
+			break
+		fi
+	fi
 done
 
 cat $id.OUTPUT
