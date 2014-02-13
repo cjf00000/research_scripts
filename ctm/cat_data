@@ -1,0 +1,14 @@
+#! /usr/bin/env python
+import os, sys
+
+if len(sys.argv) == 1:
+	print('Concatenates ctm data files and print on the standard output, appends corpus name to document ids.')
+	print('Usage: cat_data [FILE] ...')
+	sys.exit(0)
+
+files = sys.argv[1:]
+for file in files:
+	data = map(lambda line_raw : line_raw.rstrip().split(' '), open(file).readlines())
+
+	for line in data:
+		print('%s-%s %s-%s %s' % (file, line[0], file, line[1], " ".join(line[2:])))
