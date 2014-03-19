@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+import os, sys
+
+if len(sys.argv) != 3:
+        print 'Usage: copy_words <document> <times>'
+        sys.exit(0)
+
+doc_name = sys.argv[1]
+times = int(sys.argv[2])
+
+documents = map(lambda x: x.rstrip().split(' '), open(doc_name, 'r').readlines())
+
+for doc in documents:
+        id = ' '.join(doc[:2])
+
+        rem = ' '.join(doc[2:])
+        sys.stdout.write(id)
+
+        for i in xrange(times):
+                sys.stdout.write(' %s' % rem)
+
+        sys.stdout.write('\n')

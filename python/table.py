@@ -2,6 +2,12 @@ import pickle
 import sys
 
 def read_table(filename):
+	"""
+	Private function.
+		
+	Read a table from filename.
+	"""
+
 	f = open(filename, "r")
 	table = map(lambda line : line[:-1].split('\t'), f.readlines())
 	f.close()
@@ -9,10 +15,12 @@ def read_table(filename):
 	return table
 
 def mean_and_variance(filename, cluster_by, data_needed):
-# read a table from filename, seperated by \t and \n
-# cluster experiment results by columns in cluster_by
-# compute mean and variance in each cluster for columns in data_needed
-# returns a list of records, [(contents of cluster_by) samples ((mean, variance) in data_needed)]
+	"""
+	Read a table from filename, seperated by \\t and \\n
+	cluster experiment results by columns in cluster_by
+	compute mean and variance in each cluster for columns in data_needed
+	returns a list of records, [(contents of cluster_by) samples ((mean, variance) in data_needed)]
+	"""
 
 	table = read_table(filename)
 
