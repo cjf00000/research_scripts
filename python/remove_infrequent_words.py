@@ -1,5 +1,11 @@
+#! /usr/bin/env python
 # preserve max_tokens most frequent words
 import sys
+
+if len(sys.argv) != 3:
+	print 'Read a corpus, keep at most <max tokens> unique tokens, and write to stdout'
+	print 'Usage: remove_infrequent_words.py input_file max_tokens'
+	sys.exit(0)
 
 input_file = sys.argv[1]
 max_tokens = int(sys.argv[2])
