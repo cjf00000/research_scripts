@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+import os, sys, math, linear_regression
+
+zipf_a = -0.600000
+
+if len(sys.argv) != 5:
+        print 'Usage: sample_zipf <corpus in> <corpus out> <offset> <terms>'
+        sys.exit(0)
+
+
+# Compute 
+corpus_name = sys.argv[1]
+corpus_out_name = sys.argv[2]
+zipf_b_offset = math.log(float(sys.argv[3]))
+terms = int(sys.argv[4])
+
+documents = map(lambda x: x.rstrip().split(' ')[2:], open(corpus_name, 'r').readlines())
+
+word_count = {}
+
+for doc in documents:
+        for wor in doc:
+                if not wor in word_count:
+                        word_count[wor] = 1
+                else:
+                        word_count[wor] = word_count[wor] + 1
+
+freqs = [(word_count[key], key) for key in word_count.keys()]
+freqs.sort()
+freqs.reverse()
+
+nterms = len(freqs)
+
+# Sample
+zipf_b = zipf_b_offset + math.log(freqs[0][0])
+target_freqs = map(lambda x : math.exp(math.log(x) * zipf_a + zipf_b), range(1, nterms + 1))
+
+n = min(len(freqs), terms)
+for i in xrange(n):
+        print freqs[i][0], freqs[i][1], target_freqs[i]
+
+for 
