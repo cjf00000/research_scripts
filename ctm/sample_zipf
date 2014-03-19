@@ -1,25 +1,24 @@
 #!/usr/bin/env python
-import os, sys, math, linear_regression
+import os, sys, math, linear_regression, numpy
 
-zipf_a = -0.600000
-
-if len(sys.argv) != 5:
-        print 'Usage: sample_zipf <corpus in> <corpus out> <offset> <terms>'
+if len(sys.argv) != 6:
+        print 'Usage: sample_zipf <corpus in> <corpus out> <a> <times> <terms>'
         sys.exit(0)
 
 
 # Compute 
 corpus_name = sys.argv[1]
 corpus_out_name = sys.argv[2]
-zipf_b_offset = math.log(float(sys.argv[3]))
-terms = int(sys.argv[4])
+zipf_a = float(sys.argv[3])
+zipf_b_offset = math.log(float(sys.argv[4]))
+terms = int(sys.argv[5])
 
-documents = map(lambda x: x.rstrip().split(' ')[2:], open(corpus_name, 'r').readlines())
+documents = map(lambda x: x.rstrip().split(' '), open(corpus_name, 'r').readlines())
 
 word_count = {}
 
 for doc in documents:
-        for wor in doc:
+        for wor in doc[2:]:
                 if not wor in word_count:
                         word_count[wor] = 1
                 else:
@@ -34,9 +33,32 @@ nterms = len(freqs)
 # Sample
 zipf_b = zipf_b_offset + math.log(freqs[0][0])
 target_freqs = map(lambda x : math.exp(math.log(x) * zipf_a + zipf_b), range(1, nterms + 1))
+c_freqs, words = zip(*freqs)
+
+target_rate = { word : float(target_freq) / freq for (word, freq, target_freq) in zip(words, c_freqs, target_freqs)}
+actual_count = {}
+
+poisson_rng = numpy.random.poisson
+
+fout = open(corpus_out_name, 'w')
+for doc in documents:
+	fout.write('%s %s' % (doc[0], doc[1]))
+
+	for wor in doc[2:]:
+		num = poisson_rng(target_rate[wor])
+
+		for i in xrange(num):
+			fout.write(' %s' % wor)
+
+			if not wor in actual_count:
+				actual_count[wor] = 1
+			else:
+				actual_count[wor] += 1
+
+	fout.write('\n')
 
 n = min(len(freqs), terms)
 for i in xrange(n):
-        print freqs[i][0], freqs[i][1], target_freqs[i]
+        print freqs[i][0], freqs[i][1], target_freqs[i], actual_count[words[i]]
 
-for 
+fout.close()
