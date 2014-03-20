@@ -13,6 +13,10 @@ topicID = int(sys.argv[3])
 docData = parsers.parse_docToTop(docToTopFile)
 corpus = parsers.parse_corpus(corpusFile)
 
+total_non_zero_cdk = reduce(lambda x, y : x + y, map(lambda x : len(x), docData.values()), 0)
+
 for key in docData.keys():
         if topicID in docData[key]:
                 print docData[key][topicID], ' '.join(corpus[key])
+
+print 'Sparsity = %f' % (float(total_non_zero_cdk) / len(docData))
