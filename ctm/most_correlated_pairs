@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import sys, argparse, parsers, json
+
+parser = argparse.ArgumentParser(description='Output most correlated pairs.')
+parser.add_argument('corr', type=str, help='.corr.json file')
+parser.add_argument('topToWor', type=str, help='.topToWor file')
+parser.add_argument('-n', type=int, help='number of pairs', default=10)
+
+args = parser.parse_args()
+
+corr = json.loads(open(args.corr, 'r').read())
+topToWor = parsers.parse_topToWor(args.topToWor)
+
+K = len(corr)
+
+correlation_pairs = []
+for i in xrange(K):
+        for j in xrange(K):
+                if not i==j:
+                        correlation_pairs.append( (corr[i][j], i, j) )
+
+correlation_pairs.sort()
+correlation_pairs.reverse()
+
+for i in xrange(min(args.n, len(correlation_pairs))):
+        p = correlation_pairs[i]
+
+        print p[0], topToWor[p[1]], topToWor[p[2]]

@@ -25,6 +25,29 @@ def parse_docToTop(fileName):
 
         return data
 
+def parse_topToWor(fileName):
+        ''' Return [{wordID : p}] '''
+
+        lines = map(lambda x : x.rstrip(), open(fileName, 'r').readlines())
+
+        data = []
+
+        for line in lines:
+                line = re.split('\s+', line)
+                doc = {}
+
+                for pair in line[2:]:
+                        pp = pair[1:-1].split(',')
+
+                        idx = pp[0]
+                        p = float(pp[1])
+                
+                        doc[idx] = p
+
+                data.append(doc)
+
+        return data
+
 def parse_corpus(fileName):
 
         lines = map(lambda x : x.rstrip().split(), open(fileName, 'r').readlines())
