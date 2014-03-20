@@ -34,8 +34,12 @@ nterms = len(freqs)
 
 # Sample
 zipf_b = zipf_b_offset - zipf_a * math.log(nterms)
-target_freqs = map(lambda x : math.exp(math.log(x) * zipf_a + zipf_b), range(1, nterms + 1))
 c_freqs, words = zip(*freqs)
+
+if zipf_a == 0:
+	target_freqs = map(lambda x : x * math.exp(zipf_b_offset), c_freqs)
+else:
+	target_freqs = map(lambda x : math.exp(math.log(x) * zipf_a + zipf_b), range(1, nterms + 1))
 
 target_rate = { word : float(target_freq) / freq for (word, freq, target_freq) in zip(words, c_freqs, target_freqs)}
 actual_count = {}
