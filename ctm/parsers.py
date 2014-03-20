@@ -25,7 +25,7 @@ def parse_docToTop(fileName):
 
         return data
 
-def parse_topToWor(fileName):
+def parse_topToWor(fileName, maxTerms=5):
         ''' Return [{wordID : p}] '''
 
         lines = map(lambda x : x.rstrip(), open(fileName, 'r').readlines())
@@ -42,7 +42,8 @@ def parse_topToWor(fileName):
                         idx = pp[0]
                         p = float(pp[1])
                 
-                        doc[idx] = p
+                        if len(doc) < maxTerms:
+                                doc[idx] = p
 
                 data.append(doc)
 
