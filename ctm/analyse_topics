@@ -2,20 +2,16 @@
 
 import os, sys, parsers
 
-if len(sys.argv) != 3:
-        print 'Usage: analyse_topics <corpus> <docToTop>'
+if len(sys.argv) != 4:
+        print 'Usage: analyse_topics <corpus> <docToTop> <topicID>'
         sys.exit(0)
 
 corpusFile = sys.argv[1]
 docToTopFile = sys.argv[2]
+topicID = int(sys.argv[3])
 
 docData = parsers.parse_docToTop(docToTopFile)
 corpus = parsers.parse_corpus(corpusFile)
-
-print corpus['79028']
-print docData['79028']
-
-topicID = 4
 
 for key in docData.keys():
         if topicID in docData[key]:
