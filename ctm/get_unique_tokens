@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import os, sys, math, linear_regression
+
+if len(sys.argv) != 2:
+        print 'Usage: get_unique_tokens <corpus>'
+        sys.exit(0)
+
+corpus_name = sys.argv[1]
+
+documents = map(lambda x: x.rstrip().split(' ')[2:], open(corpus_name, 'r').readlines())
+
+word_count = {}
+
+for doc in documents:
+        for wor in doc:
+                if not wor in word_count:
+                        word_count[wor] = 1
+                else:
+                        word_count[wor] = word_count[wor] + 1
+
+print len(word_count)

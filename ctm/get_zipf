@@ -2,12 +2,13 @@
 
 import os, sys, math, linear_regression
 
-if len(sys.argv) != 3:
-        print 'Usage: get_zipf <corpus> <terms>'
+if len(sys.argv) != 4:
+        print 'Usage: get_zipf <corpus> <terms> <output>'
         sys.exit(0)
 
 corpus_name = sys.argv[1]
 terms = int(sys.argv[2])
+output = sys.argv[3]
 
 documents = map(lambda x: x.rstrip().split(' ')[2:], open(corpus_name, 'r').readlines())
 
@@ -24,9 +25,13 @@ freqs = [(word_count[key], key) for key in word_count.keys()]
 freqs.sort()
 freqs.reverse()
 
+fout = open(output, 'w')
 n = min(len(freqs), terms)
 for i in xrange(n):
         print freqs[i][0], freqs[i][1]
+        fout.write('%s\n' % freqs[i][0])
+
+fout.close()
 
 nterms = len(freqs)
 
