@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import os, sys, parsers
+
+if len(sys.argv) != 3:
+        print 'Usage: analyse_topics <corpus> <docToTop>'
+        sys.exit(0)
+
+corpusFile = sys.argv[1]
+docToTopFile = sys.argv[2]
+
+docData = parsers.parse_docToTop(docToTopFile)
+corpus = parsers.parse_corpus(corpusFile)
+
+print corpus['79028']
+print docData['79028']
+
+topicID = 4
+
+for key in docData.keys():
+        if topicID in docData[key]:
+                print docData[key][topicID], ' '.join(corpus[key])
